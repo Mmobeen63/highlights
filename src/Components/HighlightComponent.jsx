@@ -3,10 +3,9 @@ import React, { useState, useRef, useEffect } from "react";
 function AnnotationTool({ children }) {
   const [selectedText, setSelectedText] = useState("");
   const [selectedColor, setSelectedColor] = useState("yellow");
+  const [highlightLocation, setHighlightLocation] = useState({});
   const [showModal, setShowModal] = useState(false);
   const textRef = useRef(null);
-
-  // ...
 
   const handleHighlight = () => {
     const selection = window.getSelection();
@@ -17,7 +16,15 @@ function AnnotationTool({ children }) {
       highlight.classList.add("highlight");
       highlight.appendChild(range.extractContents());
       range.insertNode(highlight);
+      setHighlightLocation({
+        start: range.startOffset,
+        end: range.endOffset,
+      });
       localStorage.setItem("highlightedText", highlight.textContent);
+      localStorage.setItem(
+        "highlightLocation",
+        JSON.stringify(highlightLocation)
+      );
     }
   };
 
