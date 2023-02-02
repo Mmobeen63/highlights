@@ -1,8 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 
 function AnnotationTool({ children }) {
-  const [selectedText, setSelectedText] = useState("");
-  const [selectedColor, setSelectedColor] = useState("yellow");
+  const [selectedColor, setSelectedColor] = useState("");
   const [highlightLocation, setHighlightLocation] = useState({});
   const [showModal, setShowModal] = useState(false);
   const textRef = useRef(null);
@@ -12,8 +11,10 @@ function AnnotationTool({ children }) {
     if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       const highlight = document.createElement("span");
-      highlight.style.backgroundColor = selectedColor;
-      highlight.classList.add("highlight");
+      highlight.style.backgroundColor = selectedColor
+        ? selectedColor
+        : alert("Choose Color");
+      // highlight.classList.add("highlight");
       highlight.appendChild(range.extractContents());
       range.insertNode(highlight);
       setHighlightLocation({
@@ -35,32 +36,18 @@ function AnnotationTool({ children }) {
         <button onClick={() => setShowModal(true)}>Select Color</button>
         <button onClick={handleHighlight}>Highlight</button>
         {showModal && (
-          <div className="modal">
-            <div className="modal-content">
+          <div>
+            <div>
               <div>
                 <h3>Select Color</h3>
-                <div className="color-picker">
-                  <div
-                    className="color-option"
-                    onClick={() => setSelectedColor("yellow")}
-                    style={{ backgroundColor: "yellow" }}
-                  >
+                <div>
+                  <button onClick={() => setSelectedColor("yellow")}>
                     yellow
-                  </div>
-                  <div
-                    className="color-option"
-                    onClick={() => setSelectedColor("pink")}
-                    style={{ backgroundColor: "pink" }}
-                  >
-                    pink
-                  </div>
-                  <div
-                    className="color-option"
-                    onClick={() => setSelectedColor("lightgreen")}
-                    style={{ backgroundColor: "lightgreen" }}
-                  >
+                  </button>
+                  <button onClick={() => setSelectedColor("pink")}>pink</button>
+                  <button onClick={() => setSelectedColor("lightgreen")}>
                     green
-                  </div>
+                  </button>
                 </div>
                 <button onClick={() => setShowModal(false)}>Close</button>
               </div>
